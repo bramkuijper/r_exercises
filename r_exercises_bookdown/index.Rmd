@@ -1,0 +1,39 @@
+--- 
+title: "Various exercises on programming in R"
+author: "Bram Kuijper"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: ["refs_r.bib"]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "A brief set of exercises on control flow and loops in R"
+---
+
+# Introduction
+
+Here some exercises to get to grips with R programming.
+
+It assumed you know about variables and  
+simple control flow
+tools such as `for`-loops and `if`-`else`
+statements. If you need more 
+background on these topics, check out chapter 7 of [@Matloff2011]
+or check online for videos on these topics. For example,
+`for loops in R` on youtube provides a bunch of great videos. 
+If you are reading / watching those examples, try to type
+along. 
+
+Sometimes there are hints provided in the exercises, for example:
+"You can do this by using the `paste()` function", which involves
+you checking out the documentation on this function and trying
+some of the provided examples in the documentation.
+
+## Keep a crash diary
+I started to keep an Rcrash diary, in which I 
+makes a list of the most persistent problems I have encountered 
+(e.g., error messages that are less than informative, code not doing 
+one's bidding), and add solutions later once I find them. 
+This is a great lookup tool for commonly reoccurring errors.

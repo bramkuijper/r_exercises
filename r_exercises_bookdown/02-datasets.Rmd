@@ -1,0 +1,11 @@
+# Looping with datasets
+
+In this exercise, we will use existing
+datasets and use looping techniques to read in the data.
+For example, let's say you have 10 datasets which you
+need to read into R into one big dataframe. How to go
+about this?
+
+## Preliminaries
+For this exercise, we will use some dummy datasets
+that you can download from here
