@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
-bibliography: ["refs_r.bib"]
+bibliography: ["refsR.bib"]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
@@ -14,26 +14,22 @@ description: "A brief set of exercises on control flow and loops in R"
 
 # Introduction
 
-Here some exercises to get to grips with R programming.
+Here some exercises to get to grips with R programming. It assumed you know about variables and  simple control flow tools such as `for`-loops and `if`-`else` statements. If you need more  background on these topics, check out chapter 7 of [@Matloff2011] or check online for videos on these topics. For example, `for loops in R` on youtube provides a bunch of great videos. 
+If you are reading / watching those examples, try to type along. 
 
-It assumed you know about variables and  
-simple control flow
-tools such as `for`-loops and `if`-`else`
-statements. If you need more 
-background on these topics, check out chapter 7 of [@Matloff2011]
-or check online for videos on these topics. For example,
-`for loops in R` on youtube provides a bunch of great videos. 
-If you are reading / watching those examples, try to type
-along. 
-
+## Hints 
 Sometimes there are hints provided in the exercises, for example:
-"You can do this by using the `paste()` function", which involves
-you checking out the documentation on this function and trying
-some of the provided examples in the documentation.
+"You can do this by using the [`paste()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html) function", which involves
+you reading the documentation on this function and trying
+some of the provided examples in the documentation. I typically provide hyperlinks to the documentation, which is why the [`paste()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html) function here is given in blue.
 
-## Keep a crash diary
-I started to keep an Rcrash diary, in which I 
-makes a list of the most persistent problems I have encountered 
-(e.g., error messages that are less than informative, code not doing 
-one's bidding), and add solutions later once I find them. 
-This is a great lookup tool for commonly reoccurring errors.
+## Some additional coding tips:
+* Try to keep a record of the main error messages you encounter, so that you build a record of when the different error messages occur and how they are eventually resolved. This serves as a great lookup tool for commonly reoccurring errors;
+* add comments to your code, by starting a line with a hashtag character `#`. For example:
+```{r echo=TRUE, results=TRUE}
+# list of TRUE / FALSE VALUES dependent on whether number is even
+even_odd <- c(1,2,3,4,5,6,7,8) %% 2 == 0
+```
+* use [`print()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/print.html) statements to obtain information about the state of your variable within a loop
+* Make sure your variables are properly initialized every time your script runs. Say, you use a `for`-loop to calculate a sum and the result is `147` when you first run the script. However, when you run the script a second time, the result is `294`. This means that the variable containing the sum total is not set to `0` at the start of the script, whereas this should have been the case. Do not rely on manually clearing the environment in Rstudio or using things like `rm(list=ls())` as scripts should be self-contained.
+* ask for help in case you are stuck through e-mail or teams

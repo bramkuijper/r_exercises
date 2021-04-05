@@ -1,6 +1,7 @@
 book_filename: "bookdown-demo"
-rmd_files: ["index.Rmd","01-intro.Rmd"]
+rmd_files: ["index.Rmd","01-intro.Rmd","02-datasets.Rmd"]
 language:
   ui:
     chapter_name: "Chapter "
 delete_merged_file: true
+new_session: yes

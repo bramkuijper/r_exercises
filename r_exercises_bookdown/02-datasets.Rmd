@@ -1,11 +1,92 @@
 # Looping with datasets
 
-In this exercise, we will use existing
-datasets and use looping techniques to read in the data.
+In this set of exercises, we will use existing
+datasets and use looping techniques to read in the data. 
 For example, let's say you have 10 datasets which you
 need to read into R into one big dataframe. How to go
-about this?
+about this? Along the way you will encounter a bunch of functions from
+various packages that are helpful when working with data files.
 
 ## Preliminaries
-For this exercise, we will use some dummy datasets
-that you can download from here
+When generating large databases, we typically have to join together multiple files. Let us download and save a zip archive containing a bunch of Excel files from
+[here](https://github.com/bramkuijper/stress/raw/master/figs/compare_dp/some_data.zip). Unzip the folder in some directory.
+
+There are also some other files in the zip file, they should be maintained there for the sake of the exercise.
+
+```{r include=FALSE}
+knitr::read_chunk("code/answers_ch3.r")
+```
+## Obtaining a list of files
+Use the function [`list.files()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/list.files.html) to return a list of files starting with `sheet_` and with the extension `.xls`. The list should return no other files, and hence you will have to make use of the `pattern` argument of the `list.files()` function to only list the desired files. The resulting output should look like the following:
+
+```{r echo=FALSE, eval=TRUE, results=TRUE}
+# output for exercise 3.1
+<<ex_ch3-1>>
+```
+Hence, other files that are contained in the zip folder, like `another_excel_file.xls` or `sheet_other.txt`,  should not feature in the resulting list.
+
+## Obtaining a list of files with full path names {#fileList}
+Again, use the function [`list.files()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/list.files.html) from above, but make sure that it returns the complete path names, rather than just only the names of the sheets. Read the documentation of [`list.files()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/list.files.html) to see which argument(s) you will have to tweak in order for it to return full path names. Output should look like the following, except that your file system is different:
+```{r echo=FALSE, eval=TRUE, results=TRUE}
+<<ex_ch3-2>>
+```
+
+In future uses of `list.files()`, retaining the full path name saves a lot of hassle, as it means that any future script can use the output of `list.files()` without having the locate the actual directory of the excel sheets.
+
+We store the list of files that you obtained using the `list.files()` function above for future use, in a variable `xls_sheet_list`. 
+
+## Open a single file
+Use the [`read_excel()`](https://readxl.tidyverse.org/reference/read_excel.html) function from the [readxl](https://readxl.tidyverse.org/) package to read the first excel file of the list (i.e., `xls_sheet_list[[1]]`) into a variable. Specifically, [`read_excel()`](https://readxl.tidyverse.org/reference/read_excel.html) reads data from the excel sheet into a so-called [`tibble`](https://tibble.tidyverse.org/), which is [`tidyverse`]( https://www.tidyverse.org/) 's more modern version of a [`data.frame`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/data.frame.html).
+
+Subsequently, use `print()` to display the file's path name and then, below, print the first five lines of the resulting tibble. One can do so by using the [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html) function from the [`dplyr`](https://dplyr.tidyverse.org/) package. The resulting output should look like the following:
+```{r echo=F, eval=TRUE, results=TRUE}
+<<ex_ch3-3>>
+```
+
+## Getting information about each file within a `for`-loop {#forLoop}
+Now we will use a `for`-loop to go through the list of files and read each file into a `tibble` using [`read_excel()`](https://readxl.tidyverse.org/reference/read_excel.html). Subsequently, we can then request some information about the current excel sheet by interrogating the resulting `tibble`. Here, we merely print the path name of each file (which you already have done previously), the number of rows contained in the `tibble` (using either [`nrow()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/nrow.html) or `tidyverse`'s [`tally()`](https://dplyr.tidyverse.org/reference/tally.html)) and the names of all the columns using the [`names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/names.html) function. Hence, output should look like the following:
+```{r echo=F, eval=TRUE, results=TRUE, R.options=list(max.print=5)}
+<<ex_ch3-4>>
+```
+
+## Accumulating all `tibble`s into a single big `tibble`
+Now try to accumulate all `tibble`s into a big one. Before we start our `for` loop, we assign an empty `tibble` (i.e., `tibble()`) to a variable, say `super_tbl`. Starting with an empty `tibble` makes sure that when we run our script again, `super_tbl` does not retain the contents of any previous runs of the same script.
+
+Then, during each iteration of the `for`-loop, we append the contents of each excel sheet to this `super_tbl` variable by using the function [`bind_rows()`](https://dplyr.tidyverse.org/reference/bind.html).  We then assign the result of this function back to `super_tbl`, so that `super_tbl` grows during each iteration with the contents of each excel sheet.
+
+Finally, we then just use  `print(super_tbl)` and the [`summary()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/summary.html) function to inspect the result
+```{r echo=F, eval=TRUE, results=TRUE, R.options=list(max.print=5)}
+<<ex_ch3-5>>
+```
+
+
+## Plotting the data
+Now we use [`ggplot2`](https://ggplot2.tidyverse.org/) to plot the contents of `super_tbl`. Specifically, we plot the size on the $y$-axis and the different treatments on the $x$-axis, while the colors of the points should reflect the different individuals. We use points, rather than lines, by using [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html). On [`ggplot2`](https://ggplot2.tidyverse.org/)'s website you can also download an elegant cheat sheet that is very helpful in achieving this.
+
+```{r echo=F, eval=TRUE, results=TRUE, R.options=list(max.print=5)}
+<<ex_ch3-6>>
+```
+
+## Data conversion
+As you can see when you `print()` the contents of `super_tbl`, all data types have the type of a `<dbl>` (double), which stands for double-precision floating point value. Such floating point values are typically used for data which varies in a continuous fashion, as is the case for the `size` column in `super_tbl`.a
+
+However, we typically code treatments, and often also individuals, as discrete factors, rather than as continuous variables. Hence, we need to convert data from `<dbl>` to `<int>`. We can do so by using the [`convert()`](https://cran.r-project.org/web/packages/hablar/vignettes/convert.html) function from the [`hablar()`](https://cran.r-project.org/web/packages/hablar/vignettes/hablar.html) package.
+
+If we convert both the `individual` and `treatment` columns, our plot will look slightly different:
+
+```{r echo=F, eval=TRUE, results=TRUE, R.options=list(max.print=5)}
+<<ex_ch3-7>>
+```
+
+
+## A further aside: regular expressions
+It turns out that the analysis so far has omitted some relevant detail: the first 4 excel sheets (i.e., `sheet_1.xls`, `sheet_2.xls`, `sheet_3.xls` and `sheet_4.xls`) contain size measurements on a different breed of individuals (breed A) than the measuruments contained in the other excel sheets, which have used animals of breed B.
+
+Let us visually inspect whether the relationship between treatment and size is different for the two different breeds of animals. To this end, we do not modify the underlying excel sheets, rather we add identifier variable `breed` to the `tibble`s when reading in the data from each excel sheet. The identifier variable should have the values `A` and `B` for the first four sheets and remaining sheets respectively.
+
+A first suggestion may be to simply see when the index variable of the `for`-loop that went over the content of the `xls_sheet_list` variable (see section \@ref{forLoop}) is smaller or equal than 4. However, if you look at the listing of files in section \@ref{fileList} above, you will see that `sheet_10.xls` is at the second position in the variable `xls_sheet_list`, so using a simple rule like that is not going to work.
+
+Hence, we need to inspect the filenames themselves and sort out `sheet_1.xls`, `sheet_2.xls`, `sheet_3.xls` and `sheet_4.xls` from the rest. How to do this? [Regular expressions](https://stat.ethz.ch/R-manual/R-patched/library/base/html/regex.html) are a great way to filter numbers from textual data.
+
+Let us have a 
+
