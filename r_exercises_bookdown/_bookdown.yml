@@ -1,5 +1,5 @@
-book_filename: "bookdown-demo"
-rmd_files: ["index.Rmd","01-intro.Rmd","02-datasets.Rmd"]
+book_filename: "Some R exercises on looping constructs"
+rmd_files: ["index.Rmd","01-simple-for-loops.Rmd","02-more-advanced-for-loops.Rmd","03-datasets.Rmd"]
 language:
   ui:
     chapter_name: "Chapter "

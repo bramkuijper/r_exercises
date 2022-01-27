@@ -13,8 +13,8 @@ When generating large databases, we typically have to join together multiple fil
 
 There are also some other files in the zip file, they should be maintained there for the sake of the exercise.
 
-```{r include=FALSE}
-knitr::read_chunk("code/answers_ch3.r")
+```{r, include=FALSE}
+knitr::read_chunk("code/answers_loops_data.r")
 ```
 ## Obtaining a list of files
 Use the function [`list.files()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/list.files.html) to return a list of files starting with `sheet_` and with the extension `.xls`. The list should return no other files, and hence you will have to make use of the `pattern` argument of the `list.files()` function to only list the desired files. The resulting output should look like the following:
@@ -61,32 +61,39 @@ Finally, we then just use  `print(super_tbl)` and the [`summary()`](https://stat
 
 
 ## Plotting the data
-Now we use [`ggplot2`](https://ggplot2.tidyverse.org/) to plot the contents of `super_tbl`. Specifically, we plot the size on the $y$-axis and the different treatments on the $x$-axis, while the colors of the points should reflect the different individuals. We use points, rather than lines, by using [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html). On [`ggplot2`](https://ggplot2.tidyverse.org/)'s website you can also download an elegant cheat sheet that is very helpful in achieving this.
+The next task is to use [`ggplot2`](https://ggplot2.tidyverse.org/) to plot the contents of `super_tbl`. Specifically, we plot the size on the $y$-axis and the different treatments on the $x$-axis, while the colors of the points should reflect the different individuals. We use points, rather than lines, by using [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html). On [`ggplot2`](https://ggplot2.tidyverse.org/)'s website you can also download an elegant cheat sheet that is very helpful in achieving this.
 
 ```{r echo=F, eval=TRUE, results=TRUE, R.options=list(max.print=5)}
 <<ex_ch3-6>>
 ```
 
-## Data conversion
-As you can see when you `print()` the contents of `super_tbl`, all data types have the type of a `<dbl>` (double), which stands for double-precision floating point value. Such floating point values are typically used for data which varies in a continuous fashion, as is the case for the `size` column in `super_tbl`.a
+## Data modification / conversion
+As you can see when you `print()` the contents of `super_tbl`, all data types have the type of a `<dbl>` (double), which stands for double-precision floating point value. Such floating point values are typically used for data which varies in a continuous fashion, as is the case for the `size` column in `super_tbl`.
 
-However, we typically code treatments, and often also individuals, as discrete factors, rather than as continuous variables. Hence, we need to convert data from `<dbl>` to `<int>`. We can do so by using the [`convert()`](https://cran.r-project.org/web/packages/hablar/vignettes/convert.html) function from the [`hablar()`](https://cran.r-project.org/web/packages/hablar/vignettes/hablar.html) package.
+However, we often code treatments, and sometimes also individuals (if there are only a few, like here), as discrete factors at a nominal scale, meaning that number '1' is not necessarily lower than '2', it is merely an identifier of that treatment or individual. To accomplish this, we convert the `individual` and `treatment` column from `<dbl>` to `<fct>`, which stands for factor. 
 
-If we convert both the `individual` and `treatment` columns, our plot will look slightly different:
+To convert values into factors, we might either use the old-style function [`as.factor()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/factor.html) or we might use the more modern [`as_factor()`](https://haven.tidyverse.org/reference/as_factor.html) function from the [haven](https://haven.tidyverse.org/index.html) package. For this example there is no difference between both functions, but in general `as_factor()` is slightly more generic.
+
+How to change our data using the `as_factor()` function? What we can do is apply the function to the columns in question, by using the [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) function from the `dplyr()` package. Using this `mutate()` function (you have been checking the examples on the manual page, right?), we can then add two new columns to our data frame, say `individual_fac` and `treatment_fac` which reflect our new factor data.
+
+If we now plot our new `individual_fac` and `treatment_fac` columns, our plot will look slightly different:
 
 ```{r echo=F, eval=TRUE, results=TRUE, R.options=list(max.print=5)}
 <<ex_ch3-7>>
 ```
 
+Can you describe what is different between this plot and the previous one and why?
 
 ## A further aside: regular expressions
-It turns out that the analysis so far has omitted some relevant detail: the first 4 excel sheets (i.e., `sheet_1.xls`, `sheet_2.xls`, `sheet_3.xls` and `sheet_4.xls`) contain size measurements on a different breed of individuals (breed A) than the measuruments contained in the other excel sheets, which have used animals of breed B.
+The next exercise focuses on changing the data during the `for` loop that we used in section \@ref{forLoop}.
 
-Let us visually inspect whether the relationship between treatment and size is different for the two different breeds of animals. To this end, we do not modify the underlying excel sheets, rather we add identifier variable `breed` to the `tibble`s when reading in the data from each excel sheet. The identifier variable should have the values `A` and `B` for the first four sheets and remaining sheets respectively.
+Consider the following scenario: your supervisor tells you (belatedly, as always) that they have omitted some relevant detail in the previous analysis. It turns out that the size measurements in the first 4 excel sheets (i.e., `sheet_1.xls`, `sheet_2.xls`, `sheet_3.xls` and `sheet_4.xls`) were performed on a different breed of individuals (breed A), while measurements from other excel sheets used animals of breed B. 
 
-A first suggestion may be to simply see when the index variable of the `for`-loop that went over the content of the `xls_sheet_list` variable (see section \@ref{forLoop}) is smaller or equal than 4. However, if you look at the listing of files in section \@ref{fileList} above, you will see that `sheet_10.xls` is at the second position in the variable `xls_sheet_list`, so using a simple rule like that is not going to work.
+Let us visually inspect whether the relationship between treatment and size is different for the two different breeds of animals. To this end, we do not modify the underlying excel sheets, rather we add the column `breed` to the `tibble`s when reading in the data from each excel sheet. The `breed` column should have the values `A` for the first four sheets and the value `B` for the remaining sheets respectively.
 
+A first suggestion may be to simply keep track of at which of the excel sheets we are when looping over the `xls_sheet_list` variable which contains all the files (see section \@ref{forLoop}), and then set the `breed` variable according to an `if` `else` statement (i.e., first 4 files `A`, remaining files `B`). However, if you look at the listing of files in section \@ref{fileList} above, you will see that `sheet_10.xls` (breed `B`) is at the second position in the variable `xls_sheet_list`, so using a simple rule like that is not going to work.
+
+### Regular expressions to the rescue
 Hence, we need to inspect the filenames themselves and sort out `sheet_1.xls`, `sheet_2.xls`, `sheet_3.xls` and `sheet_4.xls` from the rest. How to do this? [Regular expressions](https://stat.ethz.ch/R-manual/R-patched/library/base/html/regex.html) are a great way to filter numbers from textual data.
 
-Let us have a 
-
+While we are not delving into regular expressions now, 

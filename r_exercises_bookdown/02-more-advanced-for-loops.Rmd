@@ -1,0 +1,31 @@
+# Slightly more advanced for loops
+In this set of exercises we will look at slightly more complicated for loops. 
+
+## Selecting columns of a `data.frame`
+Data types like [`data.frames`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html) and [`tibbles`](https://tibble.tidyverse.org/) are collections of variables ordered in rows and columns, like a spreadsheet. Take for example the `Cars93` `data.frame` from R's `MASS` package:
+```{r collapse=T}
+str(Cars93)
+```
+
+
+Sometimes, we would like to simplify our `data.frame`, for example by only selecting those columns that satisfy a certain condition.
+
+In this exercise, the condition is whether a column contains floating-point numbers, such as `6.5` or `1e-03`, as opposed to columns containing character data, such as `"blabla"` or integers `1`,`2`, etc. The way to find out whether a column of a `data.frame` contains floating-point numbers is to use the [`typeof()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/typeof.html) function.  the column `Min.Price` contains floating point values:
+```{r collapse=T}
+typeof(Cars93[,"Min.Price"])
+```
+
+## Nested for loops
+In this part of the exercises, we will be looking at nested `for` loops
+
+## Parameter combinations
+
+
+
+```{r include=FALSE}
+knitr::read_chunk("code/answers_other_loops.r")
+```
+
+```{r echo=FALSE, eval=TRUE, results=TRUE}
+<<ex_param_combis>>
+```

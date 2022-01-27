@@ -95,12 +95,23 @@ ggplot(data=super_tbl
 
 
 ## @knitr ex_ch3-7 ------------------------
-library("hablar")
-
-super_tbl <- convert(super_tbl, int(individual),int(treatment))
+super_tbl <- mutate(super_tbl
+                     ,individual_fac=as.factor(individual)
+                     ,treatment_fac=as.factor(treatment))
 
 ggplot(data=super_tbl
-       ,mapping=aes(x=treatment, y=size, color=individual)) +
+       ,mapping=aes(x=treatment_fac, y=size, color=individual_fac)) +
   geom_point()
 
 ## @knitr end_ex_ch3-7 ------------------------
+
+for (file_idx in 1:length(xls_sheet_list))
+{
+  a <- sub(pattern=".*sheet_(\\d{1,2})\\.xls"
+            ,replacement="\\1"
+            ,x=xls_sheet_list[[file_idx]])
+
+  print(a)
+}
+
+
