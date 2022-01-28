@@ -1,19 +1,64 @@
 # Slightly more advanced for loops
 In this set of exercises we will look at slightly more complicated for loops. 
 
-## Selecting columns of a `data.frame` containing floating-point numbers
+```{r include=FALSE}
+# https://community.rstudio.com/t/showing-only-the-first-few-lines-of-the-results-of-a-code-chunk/6963
+library(knitr)
+hook_output <- knit_hooks$get("output")
+knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines)==1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
+```
+
+## Exercise: select columns of a `data.frame` containing floating-point numbers
 Data types like [`data.frames`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html) and [`tibbles`](https://tibble.tidyverse.org/) are collections of variables ordered in rows and columns, like a spreadsheet. Take for example the `Cars93` `data.frame` from R's `MASS` package, which we inspect with the [`str()`](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/str.html) command:
-```{r collapse=T}
+```{r collapse=T, output.lines=6}
 library("MASS")
 str(Cars93)
 ```
 
-Sometimes, we would like to select certain columns from such a `data.frame`. In this exercise, we would like to select any column which contains floating-point numbers, such as `6.5` or `1e-03`, as opposed to columns containing character data, such as `"blabla"` or integers `1`,`2`, etc. 
+Sometimes, we would like to select certain columns from such a `data.frame`, dependent on a particular condition. Hence the current question:
 
-The way to find out whether a column of a `data.frame` contains floating-point numbers is to use the [`typeof()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/typeof.html) function.  the column `Min.Price` contains floating point values:
-```{r collapse=T}
+**Return a data.frame in which the columns contain floating-point numbers, such as `6.5` or `1e-03`. Omit any other column. Use a `for`-loop rather than tidyverse commands such as `filter()` or `select()`.**
+
+### Hint 1: data types
+The way to find out whether a column of a `data.frame` contains floating-point numbers is to use the [`typeof()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/typeof.html) function. Let us compare two different columns from the `Cars93` dataset, for example: 
+```{r, collapse=T}
 typeof(Cars93[,"Min.Price"])
+typeof(Cars93[,"MPG.city"])
 ```
+
+where `double` reflects that the `Min.Price` column contains floating-point numbers, whereas `integer` reflects that the `MPG.city` column contains integers. 
+
+
+### Hint 2: data.frame dimensions
+To loop through the columns of the `data.frame`, you need to find out the dimensions. The total number of columns (or rows) can be obtained by [`ncol()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/nrow.html){target="_blank"} (or [`ncol()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/nrow.html){target="_blank"}).
+
+### Hint 3: select columns based on a vector
+To select multiple columns in a `data.frame` (if you forgot about column and row selection, see page 66 and beyond in [@Matloff2011]), you can use a vector with numbers:
+```{r,collapse=T,output.lines=5}
+# make a vector containing the column numbers that you want to select
+# in this case: column 1, column 2, column 4
+column.select <- c(1,2,4)
+Cars93[,column.select]
+```
+
 
 ## Nested for loops
 In this part of the exercises, we will be looking at nested `for` loops

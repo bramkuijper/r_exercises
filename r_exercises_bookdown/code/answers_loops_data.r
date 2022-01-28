@@ -1,8 +1,10 @@
 ## @knitr ex_ch3-1 ------------------------
 suppressMessages(library("readxl", verbose=F))
 suppressMessages(library("dplyr", verbose=F))
+suppressMessages(library("here", verbose=F))
 
-path.name="/Users/bram/Projects/exercises_r/r_exercises_bookdown/_bookdown_files/additionalFiles"
+main.path <- here()
+path.name <- file.path(main.path,"code/")
 
 # use the list.files command
 # we use a so-called regular expression to

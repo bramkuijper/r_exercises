@@ -61,7 +61,7 @@ for odd and even numbers separately.
 Do this using an `if`-`else`
 statement. The resulting code should print
 the following two messages:
-```{r echo=FALSE, eval=TRUE, results=TRUE}
+```{r echo=FALSE, eval=TRUE, results=TRUE, collapse=T}
 <<ex2-5>>
 ```
 
@@ -72,7 +72,7 @@ statement.
 Hint: to find out whether a number is odd or even,
 use the modulo operator `a %% b`. This gives the remainder of
 the division `a/b`. For example,
-```{r}
+```{r, collapse=T}
 33 %% 3 
 33 %% 2 
 33 %% 5 
