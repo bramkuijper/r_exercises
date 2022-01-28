@@ -13,20 +13,43 @@ description: "A brief set of exercises on control flow and loops in R"
 
 # Introduction
 
-Here a small selection of exercises to get to grips with R programming. It assumed you already have read about variables and simple control flow tools, such as `for`-loops and `if`-`else` statements. If you need more background on these topics, check out chapter 7 of [@Matloff2011] (I can borrow you a copy available), chapter 21 of [@Wickham2017] (available online) or check online for videos on these topics. For example, using the search terms `for loops in R` provides a bunch of great videos. 
+Here a small selection of exercises to get to grips with R programming. 
+
+### Prior knowledge
+This set of exercises assumes you already have a reasonable understanding of the R basics. Below, I provide a brief overview. Please consult the provided links if you don't know what something means, to avoid getting into trouble later.
+
+### Finding help
+In R, you can find help through R's built-in help pages. For example, you can use the `?` preceding a certain function or variable. For example, in case we want more information about R's 
+```{r, eval=FALSE}
+?str
+```
+Obviously, next to R's built-in help pages
 
 
+### Different types of variables
+It is understood you know about variables and different types of data such as `character`, `logical`. Also, you should know about different data structures such as `c()`, `data.frame`s, `list`s. Finally, you should know that the  [`typeof()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/typeof.html) function can be used to find out what data is contained in a data type. Similarly, also the [`str()`](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/str.html) helps you to find out more about the structure of a data type. Please see [here](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/) for a fantastic overview of the different data types and key data structures.
 
-## Hints 
-Sometimes there are hints provided in the exercises, for example:
-"You can do this by using the [`paste()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html) function", which involves
-you reading the documentation on this function and trying
-some of the provided examples in the documentation. I typically provide hyperlinks to the documentation, which is why the [`paste()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html) function here is given in blue.
+### Operators
+Please click the corresponding links if you do not know about [arithmetic operators](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Arithmetic.html) such as `*` (multiplication), `^` (power), `%%` (modulo). The same goes for [logical operators](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Logic.html) such as `||` (which is the `OR` operator) and [relational operators](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Comparison.html) such as `>=` (which is the greater-than-or-equal-operator). See [Chapter 4](https://bookdown.org/swen/R_for_Everyone/L03.html#r-as-a-calculator) for a brief overview. 
+
+
+* `if`-`else` statements. If you to read up on this, read [Chapter 5](https://adv-r.hadley.nz/control-flow.html) from [@Wickham2019].
+* `for`-loops. 
+
+`for`-loops and `if`-`else` statements. If you need more background on these topics, check out chapter 7 of [@Matloff2011] (I can borrow you a copy available), chapter 21 of [@Wickham2017] (available online) or check online for videos on these topics. For example, using the search terms `for loops in R` provides a bunch of great videos. 
+
+
 
 ## Some additional coding tips:
 
-### Try out all examples & mistakes are good
-When reading a book, try the code examples and snippets for yourself, by typing them out (don't copy-paste them, unless it is a massive amount of code). Only by typing out do you see what's going on and will you start to memorize the different coding constructs. Moreover, you are bound to make occasional mistakes! And mistakes are good, as you'll need to learn how to solve mistakes.
+### Don't ignore the links and hints
+ Sometimes there are hints provided in the exercises, for example:
+"You can do this by using the [`paste()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html) function", which involves
+you reading the documentation on this function and trying
+some of the provided examples in the documentation. I typically provide hyperlinks to the documentation, which is why the [`paste()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html) function here is given in blue. Click on them and read them. Please do.
+
+### Try out examples for yourself
+When reading a book, try the code examples and snippets for yourself, by typing them out (don't copy-paste them, unless it is a massive amount of code). Only by typing out do you see what's going on and will you start to memorize the different coding constructs. Moreover, you are bound to make occasional mistakes! And mistakes are good, as the earlier you learn how to hunt for coding errors and solving mistakes the better.
 
 ### Search enginges are your friend
 * Search engines are your friend. If some function or construct is used that is new to one, google what it is about. Say, one encounters the statement 
